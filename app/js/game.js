@@ -11,8 +11,7 @@ var OPPOSITE_DIRECTION = {
 }
 
 // List of all orders that can be given to islands.
-var ORDERS = ['move_up', 'move_down', 'move_right', 'move_left',
-              'build_building', 'build_unit'];
+var ORDERS = ['move', 'build', 'recruit']
 
 // Convert (x, y) coordinates to a string.
 function point(x, y) {
@@ -78,6 +77,9 @@ Game.prototype.testInit = function() {
 			island.buildingLevel = randInt(0, 6);
 		}
 		island.orders = ORDERS[randInt(0, ORDERS.length)];
+		do {
+			island.direction = DIRECTIONS[randInt(0, DIRECTIONS.length)];
+		} while (island.neighbors[island.direction] === null);
 		island.defense = randInt(1, 100);
 		island.sinkCounter = randInt(1, 100);
 	}
@@ -121,6 +123,8 @@ function Island(index, x, y) {
     this.buildingLevel = 0;
     // The current orders for this island.
     this.orders = null;
+	// If orders are to move, which direction?
+	this.direction = null;
     // The island's neighboring islands.
     this.neighbors = {up:null, down:null, right:null, left:null};
     // The current defensive health of this island (0..100).

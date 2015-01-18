@@ -161,6 +161,31 @@ CanvasUI.prototype.drawGame = function(time, game) {
 				}
 				cxt.fill();
 			}
+			if (island.orders === 'move') {
+				var loc1 = island.location;
+				var loc2 = island.neighbors[island.direction].location;
+				var dx = loc2[0] - loc1[0], dy = loc2[1] - loc1[1];
+				var a = Math.atan2(dy, dx);
+				cxt.save();
+				cxt.lineWidth = 3.0;
+				cxt.fillStyle = col.c1;
+				cxt.strokeStyle = col.c2;
+				cxt.rotate(-a);
+				cxt.translate(79, 0);
+				cxt.beginPath();
+				var xs = 8, ys = 9;
+				cxt.moveTo(xs, 0);
+				cxt.lineTo(-xs, ys);
+				cxt.lineTo(-xs, -ys);
+				cxt.closePath();
+				cxt.fill();
+				cxt.stroke();
+				cxt.restore();
+			} else if (island.orders === 'build') {
+
+			} else if (island.orders === 'recruit') {
+
+			}
 		}
 		cxt.restore();
     }
