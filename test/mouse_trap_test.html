@@ -1,5 +1,11 @@
 <html>
 <script src='../app/external/node_modules/mousetrap/mousetrap.js' ></script>
 <script src='../app/js/controls.js'></script>
-
+<script src='../app/js/game.js'></script>
+<script>
+    var game = new Game();
+    game.createIslands(3, 3);
+    game.createPlayers(3);
+    bindControls();
+</script>
 </html>
