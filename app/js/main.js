@@ -22,13 +22,7 @@ var KEYS = {
     '27': 'esc'
 }
 
-require([
-    'game',
-    'canvas',
-    'menu',
-    'controls',
-    '../external/node_modules/mousetrap/mousetrap'
-], function() {
+function main() {
     function startItem(n) {
         return {
             text: 'Start new game ' + n + 'P',
@@ -56,7 +50,7 @@ require([
     gGraphics = new CanvasUI();
 
     start();
-});
+}
 
 function start() {
     if (gHandleId !== 0) {

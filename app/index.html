@@ -11,5 +11,14 @@
 </head>
 <body>
   <script data-main="js/main" src="external/require.js"></script>
+  <script>
+    require([
+      'game',
+      'canvas',
+      'menu',
+      'controls',
+      '../external/node_modules/mousetrap/mousetrap'
+    ], main);
+  </script>
 </body>
 </html>
