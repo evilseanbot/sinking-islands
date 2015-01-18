@@ -2,34 +2,56 @@
 
 // Canvas graphics implementation
 
-var COLORS = {
-	menu_bkg: '#000000',
-	menu_item: '#AAAAAA',
-	menu_sel: '#FFFFAA',
+var CANVAS_DATA = {
+	colors: {
+		menu_bkg: '#000000',
+		menu_item: '#AAAAAA',
+		menu_sel: '#FFFFAA',
 
-	water: '#09374F',
-	island: '#E3CC86',
+		water: '#09374F',
+		island: '#E3CC86',
 
-	p0: {
-		sel: 'hsl(  9,100%, 50%)',
-		b1:  'hsl(  9, 50%, 50%)',
-		b2:  'hsl(  9, 20%, 50%)'
+		p0: {
+			sel: 'hsl(  9,100%, 50%)',
+			b1:  'hsl(  9, 50%, 50%)',
+			b2:  'hsl(  9, 20%, 50%)'
+		},
+		p1: {
+			sel: 'hsl(225,100%, 66%)',
+			b1:  'hsl(225, 50%, 66%)',
+			b2:  'hsl(225, 20%, 66%)'
+		},
+		p2: {
+			sel: 'hsl(128,100%, 32%)',
+			b1:  'hsl(128, 50%, 32%)',
+			b2:  'hsl(128, 20%, 32%)'
+		},
+		p3: {
+			sel: 'hsl( 47,100%, 50%)',
+			b1:  'hsl( 47, 50%, 50%)',
+			b2:  'hsl( 47, 20%, 50%)'
+		}
 	},
-	p1: {
-		sel: 'hsl(225,100%, 66%)',
-		b1:  'hsl(225, 50%, 66%)',
-		b2:  'hsl(225, 20%, 66%)'
-	},
-	p2: {
-		sel: 'hsl(128,100%, 32%)',
-		b1:  'hsl(128, 50%, 32%)',
-		b2:  'hsl(128, 20%, 32%)'
-	},
-	p3: {
-		sel: 'hsl( 47,100%, 50%)',
-		b1:  'hsl( 47, 50%, 50%)',
-		b2:  'hsl( 47, 20%, 50%)'
-	}
+
+	island_size: 64,
+	building_size: [40, 20],
+	building_loc: [
+		[[ 0,  0]],
+		[[ 0, -1],
+		 [ 0, +1]],
+		[[-1, +1],
+		 [+1, +1],
+		 [ 0, -1]],
+		[[-1, +1],
+		 [+1, +1],
+		 [-1, -1],
+		 [+1, -1]],
+		[[-1, +1],
+		 [+1, +1],
+		 [-1, -1],
+		 [+1, -1],
+		 [ 0, -3]]
+	]
 };
 
 function CanvasUI() {
@@ -48,16 +70,16 @@ function CanvasUI() {
 CanvasUI.prototype.drawMenu = function(time, menu) {
     var cxt = this.cxt;
 
-    cxt.fillStyle = COLORS.menu_bkg;
+    cxt.fillStyle = CANVAS_DATA.colors.menu_bkg;
     cxt.fillRect(0, 0, this.width, this.height);
 
     cxt.font = '48px Sans-Serif';
     for (var i = 0; i < menu.items.length; i++) {
         if (i == menu.selection) {
-            cxt.fillStyle = COLORS.menu_sel;
+            cxt.fillStyle = CANVAS_DATA.colors.menu_sel;
             cxt.fillText('>', 20, 60 + 60 * i);
         } else {
-            cxt.fillStyle = COLORS.menu_item;
+            cxt.fillStyle = CANVAS_DATA.colors.menu_item;
         }
         cxt.fillText(menu.items[i].text, 60, 60 + 60*i);
     }
@@ -68,7 +90,7 @@ CanvasUI.prototype.drawGame = function(time, game) {
     var cxt = this.cxt;
     var width = this.width, height = this.height;
 
-    cxt.fillStyle = COLORS.water;
+    cxt.fillStyle = CANVAS_DATA.colors.water;
     cxt.fillRect(0, 0, this.width, this.height);
 
 	cxt.save();
@@ -92,7 +114,7 @@ CanvasUI.prototype.drawGame = function(time, game) {
 			cnum = 0;
 		}
 		clocs[island.index] = cnum + 1;
-        cxt.strokeStyle = COLORS['p' + i].sel;
+        cxt.strokeStyle = CANVAS_DATA.colors['p' + i].sel;
 		cxt.lineWidth = 3.0;
         cxt.beginPath();
         cxt.arc(0, 0, 64 * (1.1 + 0.1 * cnum),
@@ -101,24 +123,30 @@ CanvasUI.prototype.drawGame = function(time, game) {
 		cxt.restore();
     }
 
+	var bw = CANVAS_DATA.building_size[0],
+		bh = CANVAS_DATA.building_size[1];
     for (i = 0; i < game.islands.length; i++) {
         var island = game.islands[i];
 		cxt.save();
 		enterIsland(island);
-        cxt.fillStyle = COLORS.island;
+        cxt.fillStyle = CANVAS_DATA.colors.island;
         cxt.beginPath();
         cxt.arc(0, 0, 64, 0, Math.PI*2, true);
         cxt.fill();
 		if (island.owner >= 0) {
-			var col = COLORS['p' + island.owner];
+			var col = CANVAS_DATA.colors['p' + island.owner];
 			var j;
 			if (island.buildingLevel > 0) {
+				var bloc = CANVAS_DATA.building_loc[island.buildingLevel-1];
 				cxt.fillStyle = col.b2;
 				cxt.strokeStyle = col.b1;
 				cxt.lineWidth = 3.0;
 				cxt.beginPath();
 				for (j = 0; j < island.buildingLevel; j++) {
-					cxt.rect(-20, -10, 40, 20);
+					cxt.rect(
+						bloc[j][0] * (bw/2 + 2) - bw/2,
+						bloc[j][1] * (bh/2 + 2) - bh/2,
+						bw, bh);
 				}
 				cxt.fill();
 				cxt.stroke();
