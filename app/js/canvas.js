@@ -161,15 +161,14 @@ CanvasUI.prototype.drawGame = function(time, game) {
 				}
 				cxt.fill();
 			}
-			if (island.orders === 'move') {
+			if (island.orders === null) {
+			} else if (island.orders === 'move') {
 				var loc1 = island.location;
 				var loc2 = island.neighbors[island.direction].location;
 				var dx = loc2[0] - loc1[0], dy = loc2[1] - loc1[1];
 				var a = Math.atan2(dy, dx);
 				cxt.save();
 				cxt.lineWidth = 3.0;
-				cxt.fillStyle = col.c1;
-				cxt.strokeStyle = col.c2;
 				cxt.rotate(-a);
 				cxt.translate(79, 0);
 				cxt.beginPath();
@@ -178,13 +177,29 @@ CanvasUI.prototype.drawGame = function(time, game) {
 				cxt.lineTo(-xs, ys);
 				cxt.lineTo(-xs, -ys);
 				cxt.closePath();
-				cxt.fill();
+				if (island.unitCount > 0) {
+					cxt.fillStyle = col.c1;
+					cxt.strokeStyle = col.c2;
+					cxt.fill();
+					cxt.stroke();
+				} else {
+					cxt.strokeStyle = col.c1;
+					cxt.stroke();
+				}
+				cxt.restore();
+			} else {
+				cxt.save();
+				cxt.translate(56, 56);
+				cxt.strokeStyle = col.c2;
+				cxt.lineWidth = 3.0;
+				cxt.beginPath();
+				if (island.orders === 'build') {
+					cxt.rect(-8, -8, 16, 16);
+				} else if (island.orders == 'recruit') {
+					cxt.arc(0, 0, 8, 0, Math.PI*2, true);
+				}
 				cxt.stroke();
 				cxt.restore();
-			} else if (island.orders === 'build') {
-
-			} else if (island.orders === 'recruit') {
-
 			}
 		}
 		cxt.restore();
