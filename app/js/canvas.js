@@ -9,27 +9,27 @@ var CANVAS_DATA = {
 		menu_sel: '#FFFFAA',
 
 		water: '#09374F',
-		island: '#E3CC86',
+		island: '#E1D6B2',
 
-		p0: {
-			sel: 'hsl(  9,100%, 50%)',
-			b1:  'hsl(  9, 50%, 50%)',
-			b2:  'hsl(  9, 20%, 50%)'
+		p0: { // Red
+			c0: 'hsl(  9,100%, 50%)',
+			c1: 'hsl(  9, 50%, 20%)',
+			c2: 'hsl(  9, 20%, 50%)',
 		},
-		p1: {
-			sel: 'hsl(225,100%, 66%)',
-			b1:  'hsl(225, 50%, 66%)',
-			b2:  'hsl(225, 20%, 66%)'
+		p1: { // Blue
+			c0: 'hsl(225,100%, 66%)',
+			c1: 'hsl(225, 50%, 36%)',
+			c2: 'hsl(225, 20%, 66%)',
 		},
-		p2: {
-			sel: 'hsl(128,100%, 32%)',
-			b1:  'hsl(128, 50%, 32%)',
-			b2:  'hsl(128, 20%, 32%)'
+		p2: { // Green
+			c0: 'hsl(128,100%, 32%)',
+			c1: 'hsl(128, 50%, 22%)',
+			c2: 'hsl(128, 20%, 42%)',
 		},
-		p3: {
-			sel: 'hsl( 47,100%, 50%)',
-			b1:  'hsl( 47, 50%, 50%)',
-			b2:  'hsl( 47, 20%, 50%)'
+		p3: { // Yellow
+			c0: 'hsl( 47,100%, 50%)',
+			c1: 'hsl( 47, 60%, 30%)',
+			c2: 'hsl( 47, 50%, 70%)',
 		}
 	},
 
@@ -114,7 +114,7 @@ CanvasUI.prototype.drawGame = function(time, game) {
 			cnum = 0;
 		}
 		clocs[island.index] = cnum + 1;
-        cxt.strokeStyle = CANVAS_DATA.colors['p' + i].sel;
+        cxt.strokeStyle = CANVAS_DATA.colors['p' + i].c0;
 		cxt.lineWidth = 3.0;
         cxt.beginPath();
         cxt.arc(0, 0, 64 * (1.1 + 0.1 * cnum),
@@ -138,8 +138,8 @@ CanvasUI.prototype.drawGame = function(time, game) {
 			var j;
 			if (island.buildingLevel > 0) {
 				var bloc = CANVAS_DATA.building_loc[island.buildingLevel-1];
-				cxt.fillStyle = col.b2;
-				cxt.strokeStyle = col.b1;
+				cxt.fillStyle = col.c2;
+				cxt.strokeStyle = col.c1;
 				cxt.lineWidth = 3.0;
 				cxt.beginPath();
 				for (j = 0; j < island.buildingLevel; j++) {
@@ -150,6 +150,16 @@ CanvasUI.prototype.drawGame = function(time, game) {
 				}
 				cxt.fill();
 				cxt.stroke();
+			}
+			if (island.unitCount > 0) {
+				var n = island.unitCount;
+				cxt.fillStyle = col.c1;
+				cxt.beginPath();
+				for (j = 0; j < n; j++) {
+					cxt.arc((j * 2 + 1 - n) * 9, 35, 8,
+							0, Math.PI*2, true);
+				}
+				cxt.fill();
 			}
 		}
 		cxt.restore();
