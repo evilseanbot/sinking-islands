@@ -67,15 +67,18 @@ CanvasUI.prototype.drawGame = function(time, game) {
     var i;
     var cxt = this.cxt;
     var width = this.width, height = this.height;
-    var sz = width * 0.05;
 
     cxt.fillStyle = COLORS.water;
     cxt.fillRect(0, 0, this.width, this.height);
 
+	cxt.save();
+	var scale = this.width / 1280;
+	cxt.scale(scale, scale);
+
     function enterIsland(island) {
         var loc = island.location;
-        cxt.translate((loc[0] * 0.75 + 1) * (width / 2),
-					  (-loc[1] * 0.75 + 1) * (height / 2));
+        cxt.translate((loc[0] * 0.75 + 1) * (1280 / 2),
+					  (-loc[1] * 0.75 + 1) * (720 / 2));
     }
 
 	var clocs = {};
@@ -92,7 +95,7 @@ CanvasUI.prototype.drawGame = function(time, game) {
         cxt.strokeStyle = COLORS['p' + i].sel;
 		cxt.lineWidth = 3.0;
         cxt.beginPath();
-        cxt.arc(0, 0, sz * (1.1 + 0.1 * cnum),
+        cxt.arc(0, 0, 64 * (1.1 + 0.1 * cnum),
 				0, Math.PI*2, true);
         cxt.stroke();
 		cxt.restore();
@@ -104,7 +107,7 @@ CanvasUI.prototype.drawGame = function(time, game) {
 		enterIsland(island);
         cxt.fillStyle = COLORS.island;
         cxt.beginPath();
-        cxt.arc(0, 0, sz, 0, Math.PI*2, true);
+        cxt.arc(0, 0, 64, 0, Math.PI*2, true);
         cxt.fill();
 		if (island.owner >= 0) {
 			var col = COLORS['p' + island.owner];
@@ -123,6 +126,8 @@ CanvasUI.prototype.drawGame = function(time, game) {
 		}
 		cxt.restore();
     }
+
+	cxt.restore();
 }
 
 CanvasUI.prototype.draw = function(time) {
