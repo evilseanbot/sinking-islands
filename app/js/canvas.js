@@ -11,16 +11,24 @@ var COLORS = {
 	island: '#E3CC86',
 
 	p0: {
-		sel: 'hsl(9,100%,50%)',
+		sel: 'hsl(  9,100%, 50%)',
+		b1:  'hsl(  9, 50%, 50%)',
+		b2:  'hsl(  9, 20%, 50%)'
 	},
 	p1: {
-		sel: 'hsl(225,100%,66%)'
+		sel: 'hsl(225,100%, 66%)',
+		b1:  'hsl(225, 50%, 66%)',
+		b2:  'hsl(225, 20%, 66%)'
 	},
 	p2: {
-		sel: 'hsl(47,100%,50%)'
+		sel: 'hsl(128,100%, 32%)',
+		b1:  'hsl(128, 50%, 32%)',
+		b2:  'hsl(128, 20%, 32%)'
 	},
 	p3: {
-		sel: 'hsl(128,100%,32%)'
+		sel: 'hsl( 47,100%, 50%)',
+		b1:  'hsl( 47, 50%, 50%)',
+		b2:  'hsl( 47, 20%, 50%)'
 	}
 };
 
@@ -91,10 +99,23 @@ CanvasUI.prototype.drawGame = function(time, game) {
     for (i = 0; i < game.islands.length; i++) {
         var island = game.islands[i];
         var loc = islandLoc(island);
-        cxt.fillStyle = '#E3CC86';
+        cxt.fillStyle = COLORS.island;
         cxt.beginPath();
         cxt.arc(loc[0], loc[1], sz, 0, Math.PI*2, true);
         cxt.fill();
+		if (island.owner < 0) {
+			continue;
+		}
+		var col = COLORS['p' + island.owner];
+		var j;
+		for (j = 0; j < island.buildingLevel; j++) {
+			cxt.fillStyle = col.b2;
+			cxt.strokeStyle = col.b1;
+			cxt.beginPath();
+			cxt.rect(loc[0] - 20, loc[1] - 10, 40, 20);
+			cxt.fill();
+			cxt.stroke();
+		}
     }
 }
 
