@@ -33,10 +33,23 @@ CanvasUI.prototype.drawMenu = function(time, menu) {
 }
 
 CanvasUI.prototype.drawGame = function(time, game) {
+    var i;
     var cxt = this.cxt;
 
-    cxt.fillStyle = '#ff0000';
+    cxt.fillStyle = '#869DE3';
     cxt.fillRect(0, 0, this.width, this.height);
+
+    var sz = this.width * 0.05;
+    for (i = 0; i < game.islands.length; i++) {
+        var island = game.islands[i];
+        var loc = island.location;
+        var x = (loc[0] * 0.75 + 1) * (this.width / 2);
+        var y = (loc[1] * 0.75 + 1) * (this.height / 2);
+        cxt.fillStyle = '#E3CC86';
+        cxt.beginPath();
+        cxt.arc(x, y, sz, 0, Math.PI*2, true);
+        cxt.fill();
+    }
 }
 
 CanvasUI.prototype.draw = function(time) {
