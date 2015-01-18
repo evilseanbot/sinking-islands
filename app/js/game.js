@@ -1,3 +1,5 @@
+'use strict';
+
 // List of all directions.
 var DIRECTIONS = ['up', 'down', 'right', 'left'];
 

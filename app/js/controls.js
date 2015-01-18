@@ -1,3 +1,5 @@
+'use strict';
+
 var controllerCounter = 0;
 
 function Cursor() {

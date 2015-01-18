@@ -1,3 +1,5 @@
+'use strict';
+
 // A menu, where the user can select items.
 
 function Menu(items) {

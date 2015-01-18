@@ -1,3 +1,5 @@
+'use strict';
+
 // Canvas graphics implementation
 
 function CanvasUI() {

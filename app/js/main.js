@@ -1,3 +1,5 @@
+'use strict';
+
 // Global game instance.
 var gGame = null;
 
