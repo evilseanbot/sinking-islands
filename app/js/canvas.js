@@ -11,16 +11,16 @@ var COLORS = {
 	island: '#E3CC86',
 
 	p0: {
-		sel: '#FF2600'
+		sel: 'hsl(9,100%,50%)',
 	},
 	p1: {
-		sel: '#527DFF'
+		sel: 'hsl(225,100%,66%)'
 	},
 	p2: {
-		sel: '#FFC900'
+		sel: 'hsl(47,100%,50%)'
 	},
 	p3: {
-		sel: '#00A115'
+		sel: 'hsl(128,100%,32%)'
 	}
 };
 
