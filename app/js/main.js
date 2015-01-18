@@ -79,3 +79,8 @@ function startGame(numPlayers) {
     gGame = game;
     gMenu = null;
 }
+
+function test() {
+	startGame(4);
+	gGame.testInit();
+}

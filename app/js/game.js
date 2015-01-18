@@ -19,6 +19,11 @@ function point(x, y) {
     return '' + x + ',' + y;
 }
 
+// Generate a random integer in a half-open range.
+function randInt(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
 // The game state.
 function Game() {
     // List of all islands in the game.
@@ -60,6 +65,22 @@ Game.prototype.createIslands = function(width, height) {
         }
     }
     this.islands = islands;
+}
+
+// Set up a random game with lots of stuff.
+Game.prototype.testInit = function() {
+	var i;
+	for (i = 0; i < this.islands.length; i++) {
+		var island = this.islands[i];
+		island.owner = randInt(-1, this.players.length);
+		island.unitCount = randInt(0, 6);
+		if (island.owner >= 0) {
+			island.buildingLevel = randInt(0, 6);
+		}
+		island.orders = ORDERS[randInt(0, ORDERS.length)];
+		island.defense = randInt(1, 100);
+		island.sinkCounter = randInt(1, 100);
+	}
 }
 
 // Create the players.
@@ -122,5 +143,5 @@ Island.prototype.connect = function(other, dir) {
 }
 
 Island.prototype.update = function() {
-    
+
 }
