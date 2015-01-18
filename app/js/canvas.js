@@ -72,17 +72,18 @@ CanvasUI.prototype.drawGame = function(time, game) {
     cxt.fillStyle = COLORS.water;
     cxt.fillRect(0, 0, this.width, this.height);
 
-    function islandLoc(island) {
+    function enterIsland(island) {
         var loc = island.location;
-        return [(loc[0] * 0.75 + 1) * (width / 2),
-                (-loc[1] * 0.75 + 1) * (height / 2)];
+        cxt.translate((loc[0] * 0.75 + 1) * (width / 2),
+					  (-loc[1] * 0.75 + 1) * (height / 2));
     }
 
 	var clocs = {};
     for (i = 0; i < game.players.length; i++) {
         var player = game.players[i];
 		var island = player.cursor.island;
-        var loc = islandLoc(island);
+		cxt.save();
+		enterIsland(island);
 		var cnum = clocs[island.index];
 		if (cnum === undefined) {
 			cnum = 0;
@@ -91,31 +92,36 @@ CanvasUI.prototype.drawGame = function(time, game) {
         cxt.strokeStyle = COLORS['p' + i].sel;
 		cxt.lineWidth = 3.0;
         cxt.beginPath();
-        cxt.arc(loc[0], loc[1], sz * (1.1 + 0.1 * cnum),
+        cxt.arc(0, 0, sz * (1.1 + 0.1 * cnum),
 				0, Math.PI*2, true);
         cxt.stroke();
+		cxt.restore();
     }
 
     for (i = 0; i < game.islands.length; i++) {
         var island = game.islands[i];
-        var loc = islandLoc(island);
+		cxt.save();
+		enterIsland(island);
         cxt.fillStyle = COLORS.island;
         cxt.beginPath();
-        cxt.arc(loc[0], loc[1], sz, 0, Math.PI*2, true);
+        cxt.arc(0, 0, sz, 0, Math.PI*2, true);
         cxt.fill();
-		if (island.owner < 0) {
-			continue;
+		if (island.owner >= 0) {
+			var col = COLORS['p' + island.owner];
+			var j;
+			if (island.buildingLevel > 0) {
+				cxt.fillStyle = col.b2;
+				cxt.strokeStyle = col.b1;
+				cxt.lineWidth = 3.0;
+				cxt.beginPath();
+				for (j = 0; j < island.buildingLevel; j++) {
+					cxt.rect(-20, -10, 40, 20);
+				}
+				cxt.fill();
+				cxt.stroke();
+			}
 		}
-		var col = COLORS['p' + island.owner];
-		var j;
-		for (j = 0; j < island.buildingLevel; j++) {
-			cxt.fillStyle = col.b2;
-			cxt.strokeStyle = col.b1;
-			cxt.beginPath();
-			cxt.rect(loc[0] - 20, loc[1] - 10, 40, 20);
-			cxt.fill();
-			cxt.stroke();
-		}
+		cxt.restore();
     }
 }
 
