@@ -35,19 +35,33 @@ CanvasUI.prototype.drawMenu = function(time, menu) {
 CanvasUI.prototype.drawGame = function(time, game) {
     var i;
     var cxt = this.cxt;
+    var width = this.width, height = this.height;
+    var sz = width * 0.05;
 
     cxt.fillStyle = '#869DE3';
     cxt.fillRect(0, 0, this.width, this.height);
 
-    var sz = this.width * 0.05;
+    function islandLoc(island) {
+        var loc = island.location;
+        return [(loc[0] * 0.75 + 1) * (width / 2),
+                (-loc[1] * 0.75 + 1) * (height / 2)];
+    }
+
+    for (i = 0; i < game.players.length; i++) {
+        var player = game.players[i];
+        var loc = islandLoc(player.cursor.island);
+        cxt.strokeStyle = '#ff00000'
+        cxt.beginPath();
+        cxt.arc(loc[0], loc[1], sz * 1.1, 0, Math.PI*2, true);
+        cxt.stroke();
+    }
+
     for (i = 0; i < game.islands.length; i++) {
         var island = game.islands[i];
-        var loc = island.location;
-        var x = (loc[0] * 0.75 + 1) * (this.width / 2);
-        var y = (loc[1] * 0.75 + 1) * (this.height / 2);
+        var loc = islandLoc(island);
         cxt.fillStyle = '#E3CC86';
         cxt.beginPath();
-        cxt.arc(x, y, sz, 0, Math.PI*2, true);
+        cxt.arc(loc[0], loc[1], sz, 0, Math.PI*2, true);
         cxt.fill();
     }
 }
