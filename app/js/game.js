@@ -61,11 +61,14 @@ Game.prototype.createIslands = function(width, height) {
 }
 
 // Create the players.
+// depends on createIslands being called first.
 Game.prototype.createPlayers = function(numPlayers) {
     var i;
     this.players = [];
     for (i = 0; i < numPlayers; i++) {
         this.players.push(new Player(i));
+        this.players[i].cursor.island = this.islands[0];
+
     }
 }
 
@@ -74,7 +77,8 @@ function Player(index) {
     // Unique identifier for the player (0..N-1).
     this.index = index;
     // Island that the player's cursor is pointing at.
-    this.cursor = null;
+    this.cursor = new Cursor();
+
     // Number of rocket parts that the player has (0..100).
     // Reaching 100 wins the game.
     this.rocketParts = 0;
