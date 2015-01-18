@@ -20,9 +20,9 @@ function point(x, y) {
 // The game state.
 function Game() {
     // List of all islands in the game.
-    this.islands = [];
+    this.islands = null;
     // List of all players in the game.
-    this.players = [];
+    this.players = null;
 }
 
 // Create a grid of islands.
@@ -60,8 +60,19 @@ Game.prototype.createIslands = function(width, height) {
     this.islands = islands;
 }
 
+// Create the players.
+Game.prototype.createPlayers = function(numPlayers) {
+    var i;
+    this.players = [];
+    for (i = 0; i < numPlayers; i++) {
+        this.players.push(new Player(i));
+    }
+}
+
 // Player class.
-function Player() {
+function Player(index) {
+    // Unique identifier for the player (0..N-1).
+    this.index = index;
     // Island that the player's cursor is pointing at.
     this.cursor = null;
     // Number of rocket parts that the player has (0..100).
@@ -71,7 +82,7 @@ function Player() {
 
 // Island class.
 function Island(index, x, y) {
-    // Unique identifier for the island.
+    // Unique identifier for the island (0..N-1).
     this.index = index;
     // (x, y) visual location on the map, in the range -1..+1.
     this.location = [x, y];

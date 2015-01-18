@@ -1,5 +1,14 @@
-// Global UI instance.
-var ui = null;
+// Global game instance.
+var gGame = null;
+
+// Global menu instance.
+var gMenu = null
+
+// Main animation handle.
+var gHandleId = 0;
+
+// Global graphics instance.
+var gGraphics = null;
 
 var KEYS = {
     '40': 'down',
@@ -13,15 +22,65 @@ var KEYS = {
 
 require([
     'game',
-    'canvas'
+    'canvas',
+    'menu'
 ], function() {
-    ui = new CanvasUI();
-    addEventListener('keydown', function (e) {
-        var key = KEYS[e.keyCode];
-        if (key) {
-            ui.screen.keyDown(key);
-            return false;
+    function startItem(n) {
+        return {
+            text: 'Start new game ' + n + 'P',
+            func: function() { startGame(n); }
         }
+    }
+    gMenu = new Menu([
+        startItem(2),
+        startItem(3),
+        startItem(4)
+    ]);
+
+    window.addEventListener('keydown', function (e) {
+        console.log('EVENT');
+        var key = KEYS[e.keyCode];
+        if (!key) {
+            return;
+        }
+        e.preventDefault();
+        if (gMenu !== null) {
+            gMenu.keyDown(key);
+        }
+        if (gGame !== null) {
+            gGame.keyDown(key);
+        }
+        return false;
     }, false);
-    ui.start();
-})
+
+    gGraphics = new CanvasUI();
+
+    start();
+});
+
+function start() {
+    if (gHandleId !== 0) {
+        return;
+    }
+    function runFrame(time) {
+        gHandleId = window.requestAnimationFrame(runFrame);
+        gGraphics.draw(time);
+    }
+    window.requestAnimationFrame(runFrame);
+}
+
+function stop() {
+    if (gHandleId === 0) {
+        return;
+    }
+    window.cancelAnimationFrame(gHandleId);
+    gHandleId = 0;
+}
+
+function startGame(numPlayers) {
+    var game = new Game();
+    game.createIslands(6, 4);
+    game.createPlayers(numPlayers);
+    gGame = game;
+    gMenu = null;
+}
