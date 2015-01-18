@@ -38,7 +38,6 @@ require([
     ]);
 
     window.addEventListener('keydown', function (e) {
-        console.log('EVENT');
         var key = KEYS[e.keyCode];
         if (!key) {
             return;
