@@ -11,6 +11,20 @@ function CanvasUI() {
     this.handleId = 0;
     this.width = width;
     this.height = height;
+    this.screen = new MenuScreen([
+        {
+            text: 'Start new game 2P',
+            func: function() { startGame(2); }
+        },
+        {
+            text: 'Start new game 3P',
+            func: function() { startGame(3); }
+        },
+        {
+            text: 'Start new game 4P',
+            func: function() { startGame(4); }
+        }
+    ]);
     document.body.appendChild(this.canvas);
 }
 
@@ -23,7 +37,7 @@ CanvasUI.prototype.start = function() {
     (function(ui) {
         function func(time) {
             ui.handleId = window.requestAnimationFrame(func);
-            ui.runFrame(time);
+            ui.screen.runFrame(ui.cxt, ui.width, ui.height, time);
         }
         ui.handleId = window.requestAnimationFrame(func);
     })(ui);
@@ -38,10 +52,26 @@ CanvasUI.prototype.stop = function() {
     this.handleId = 0;
 }
 
-// Display current frame to screen.
-CanvasUI.prototype.runFrame = function(time) {
-    console.log('draw: ' + time);
-    var cxt = this.cxt;
-    cxt.fillStyle = 'rgb(255, 0, 0)';
-    cxt.fillRect(0, 0, this.width, this.height);
+// Main menu screen.
+
+function MenuScreen(items) {
+    this.items = items;
+    this.selection = 0;
+}
+
+MenuScreen.prototype.runFrame = function(cxt, width, height, time) {
+    cxt.fillStyle = 'rgb(0, 0, 0)';
+    cxt.fillRect(0, 0, width, height);
+
+    cxt.font = '48px Sans-Serif';
+    cxt.fillStyle = 'rgb(200, 200, 200)';
+    for (var i = 0; i < this.items.length; i++) {
+        if (i == this.selection) {
+            cxt.fillStyle = '#ffffaa';
+            cxt.fillText('>', 20, 60 + 60 * i);
+        } else {
+            cxt.fillStyle = '#aaaaaa';
+        }
+        cxt.fillText(this.items[i].text, 60, 60 + 60*i);
+    }
 }
