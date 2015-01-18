@@ -75,3 +75,17 @@ MenuScreen.prototype.runFrame = function(cxt, width, height, time) {
         cxt.fillText(this.items[i].text, 60, 60 + 60*i);
     }
 }
+
+MenuScreen.prototype.keyDown = function(key) {
+    if (key == 'up') {
+        this.selection--;
+        if (this.selection < 0) {
+            this.selection = this.items.length - 1;
+        }
+    } else if (key == 'down') {
+        this.selection++;
+        if (this.selection >= this.items.length) {
+            this.selection = 0;
+        }
+    }
+}
