@@ -12,13 +12,12 @@ Cursor.prototype.move = function(direction) {
 		console.log("Moved cursor " + this.cursorNum + " " + direction);
 		console.log('cursor now at island' + this.island.index);
 		console.log('island coordinates' + this.island.location);
-		console.log(game);
 	} else {
 		console.log("cant move in that direction");
 	}
 }
 
-function bindControls() {
+function bindControls(game) {
 	var controlMap = {
 		w: {
 	        button: 'w',

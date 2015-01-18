@@ -23,7 +23,9 @@ var KEYS = {
 require([
     'game',
     'canvas',
-    'menu'
+    'menu',
+    'controls',
+    '../external/node_modules/mousetrap/mousetrap'
 ], function() {
     function startItem(n) {
         return {
@@ -45,9 +47,6 @@ require([
         e.preventDefault();
         if (gMenu !== null) {
             gMenu.keyDown(key);
-        }
-        if (gGame !== null) {
-            gGame.keyDown(key);
         }
         return false;
     }, false);
@@ -80,6 +79,7 @@ function startGame(numPlayers) {
     var game = new Game();
     game.createIslands(6, 4);
     game.createPlayers(numPlayers);
+    bindControls(game);
     gGame = game;
     gMenu = null;
 }
