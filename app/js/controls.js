@@ -159,4 +159,30 @@ function bindControls(game) {
 		});	
 	}
 
+	var gamepad = new Gamepad();
+
+	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
+		var index = e.gamepad.index;
+		if (index < game.players.length) {
+			if (e.control == 'DPAD_UP') {
+				game.players[index].cursor.move('up');
+			} else if (e.control == 'DPAD_LEFT') {
+				game.players[index].cursor.move('left');
+			} else if (e.control == 'DPAD_RIGHT') {
+				game.players[index].cursor.move('right');
+			} else if (e.control == 'DPAD_DOWN') {
+				game.players[index].cursor.move('down');
+			}
+
+			if (e.control =='FACE_1') {
+			//	game.players[index].mockAction1();
+			} else if (e.control =='FACE_2') {
+			//	game.players[index].mockAction2();
+			} else if (e.control =='FACE_3') {
+			//	game.players[index].mockAction2();
+			}
+		}
+	});
+
+	gamepad.init();
 }

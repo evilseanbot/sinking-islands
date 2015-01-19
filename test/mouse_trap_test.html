@@ -1,5 +1,6 @@
 <html>
 <script src='../app/external/node_modules/mousetrap/mousetrap.js' ></script>
+<script src='../app/external/gamepad.js'></script>
 <script src='../app/js/controls.js'></script>
 <script src='../app/js/game.js'></script>
 <script>
@@ -7,5 +8,14 @@
     game.createIslands(3, 3);
     game.createPlayers(4);
     bindControls(game);
+
+	/*function runAnimation()
+	{
+	    //window.requestAnimationFrame(runAnimation);
+	    handleGamepads(game);
+	}
+
+	window.requestAnimationFrame(runAnimation); 
+    */
 </script>
 </html>
